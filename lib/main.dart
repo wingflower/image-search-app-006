@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:image_search_app_006/data/repository/image_item_repository_impl.dart';
+import 'package:image_search_app_006/di/di_setup.dart';
 import 'package:image_search_app_006/ui/main_screen.dart';
 import 'package:image_search_app_006/ui/main_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  diSetup();
   runApp(const MyApp());
 }
 
@@ -19,7 +22,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => MainViewModel(),
+        create: (_) => MainViewModel(
+          repository: ImageItemRepositoryImpl(),
+        ),
         child: const MainScreen(),
       )
     );
