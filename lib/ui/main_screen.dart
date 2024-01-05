@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_search_app_006/data/repository/image_item_repository_impl.dart';
 import 'package:image_search_app_006/ui/widget/image_item_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../data/model/image_item.dart';
 import 'main_view_model.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MainViewModel>();
+    final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Image Search App'),
@@ -61,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              viewModel.isLoading
+              state.isLoading
               ? const Center(child: CircularProgressIndicator())
               : Expanded(
                 child: GridView.builder(
@@ -70,9 +69,9 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisSpacing: 32,
                     mainAxisSpacing: 32,
                   ),
-                  itemCount: viewModel.imageItems.length,
+                  itemCount: state.imageItems.length,
                   itemBuilder: (context, index) {
-                    final imageItem = viewModel.imageItems[index];
+                    final imageItem = state.imageItems[index];
                     return ImageItemWidget(imageItem: imageItem);
                   },
                 ),
