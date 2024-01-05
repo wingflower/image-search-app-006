@@ -53,29 +53,41 @@ class _MainScreenState extends State<MainScreen> {
                   hintText: 'Search',
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.search),
-                    onPressed: () {
-                      viewModel.searchImage(searchTextEditingController.text);
+                    onPressed: () async {
+                      final result = await viewModel
+                          .searchImage(searchTextEditingController.text);
+
+                      if (result == false) {
+                        const snackBar = SnackBar(
+                          content: Text('Yay! Bug!'),
+                        );
+
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      }
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               state.isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 32,
-                    mainAxisSpacing: 32,
-                  ),
-                  itemCount: state.imageItems.length,
-                  itemBuilder: (context, index) {
-                    final imageItem = state.imageItems[index];
-                    return ImageItemWidget(imageItem: imageItem);
-                  },
-                ),
-              ),
+                  ? const Center(child: CircularProgressIndicator())
+                  : Expanded(
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 32,
+                          mainAxisSpacing: 32,
+                        ),
+                        itemCount: state.imageItems.length,
+                        itemBuilder: (context, index) {
+                          final imageItem = state.imageItems[index];
+                          return ImageItemWidget(imageItem: imageItem);
+                        },
+                      ),
+                    ),
             ],
           ),
         ),
